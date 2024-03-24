@@ -7,8 +7,6 @@
     <title>3</title>
 </head>
 <body>
-    
-    <h1>Форма</h1>
 
     <form action="index.php"
         method="POST">
@@ -63,7 +61,7 @@
         
         <label>
             Пол: <br />
-            <input type="radio" checked="checked"
+            <input type="radio" 
             name="radio1" value="woman" />
             Женский</label>
         <label>
