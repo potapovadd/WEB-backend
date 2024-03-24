@@ -94,8 +94,13 @@
         
         <label>
             С контрактом ознакомлен(а): <br />
-            <input type="submit" value="Сохранить"
+            <input type="checkbox"
             name="check-1" />
+        </label> <br />
+
+        <label>
+            <input type="submit" value="Сохранить"
+            name="button" />
         </label> <br />
 
     </form>

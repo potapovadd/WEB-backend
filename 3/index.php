@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 $errors = FALSE;
-if (empty($_POST['fio']) || !preg_match('/^[а-яА-Яa-zA-Z\s]{1,150}$/', $_POST['fio'])) {
+if (empty($_POST['fio']) || !preg_match('/^[а-яА-Яa-zA-Z\s]{1,150}$/u', $_POST['fio'])) {
   print('Заполните имя.<br/>');
   $errors = TRUE;
 }
