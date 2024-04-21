@@ -82,9 +82,9 @@
     <?php if ($errors['radio1']) {print " error";} ?>">
       Пол:
       <input type="radio" name="radio1 " value="woman" 
-      <?php if ($values['radio1 '] == 'woman') print('checked'); ?>/> Женский
+      <?php if ($values['radio1'] == 'woman') print('checked'); ?>/> Женский
       <input type="radio" name="radio1 " value="man" 
-      <?php if ($values['gender'] == 'man') print('checked'); ?>/> Мужской
+      <?php if ($values['radio1'] == 'man') print('checked'); ?>/> Мужской
     </label><br>
 
     <label>
