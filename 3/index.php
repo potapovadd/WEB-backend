@@ -46,8 +46,8 @@ if (empty($_POST['radio1'])) {
   $errors = TRUE;
 }
 
-$user = 'u67327'; 
-$pass = '4242183'; 
+$user = ''; 
+$pass = ''; 
 $db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
   [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
 
