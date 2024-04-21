@@ -120,7 +120,7 @@ else {
   }
   setcookie('month_value', $_POST['month'], time() + 30 * 24 * 60 * 60 * 12);
 
-  if (empty($_POST['day']) || !is_numeric($_POST['month']) || $_POST['day'] > $months[$_POST['month'] - 1]) {
+  if (empty($_POST['day']) || !is_numeric($_POST['day']) || $_POST['day'] > $months[$_POST['month'] - 1]) {
     setcookie('day_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
