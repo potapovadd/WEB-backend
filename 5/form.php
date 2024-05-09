@@ -211,7 +211,7 @@
     </label><br>
 
     <input type="submit" 
-    value="ok" 
+    value="Ок" 
     name="button"/>
   </form>
 

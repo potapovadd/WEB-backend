@@ -185,6 +185,10 @@ else {
     $errorlang = TRUE;
   }
   else {
+    include('../password.php');
+    $db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
+    [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    
     $sth = $db->prepare("SELECT id FROM lang");
     $sth->execute();
     $langs = $sth->fetchAll();
