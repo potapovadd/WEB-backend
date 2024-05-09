@@ -188,7 +188,7 @@ else {
     include('../password.php');
     $db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
     [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-    
+
     $sth = $db->prepare("SELECT id FROM lang");
     $sth->execute();
     $langs = $sth->fetchAll();
@@ -288,6 +288,8 @@ else {
       $iduser = $id;
       $stmt->execute();
     }
+    $stmt = $db->prepare("INSERT INTO login_password SET login = ?, password = ?");
+      $stmt->execute([$login, md5($password)]);
   }
   catch(PDOException $e){
     print('Error : ' . $e->getMessage());
