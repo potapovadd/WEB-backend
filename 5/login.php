@@ -45,6 +45,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 else {
   include('../password.php');
+  $db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
+    [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    
   $login = $_POST['login'];
   $pass = md5($_POST['pass']);
   $sth = $db->prepare("SELECT * FROM login_password");
