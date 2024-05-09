@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ru">
   <head>
   <link rel="stylesheet" href="style.css">
@@ -7,9 +6,7 @@
         border: 2px solid red;
       }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4</title>
+    <title>5</title>
   </head>
 
   <body>
