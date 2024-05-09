@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : strip_tags($_COOKIE['bio_value']);
   $values['check-1'] = empty($_COOKIE['check-1_value']) ? '' : strip_tags($_COOKIE['check-1_value']);
 
-}
+
 
 include('../password.php');
 if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])){
@@ -129,9 +129,10 @@ if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['log
   $values['check-1'] = strip_tags($user[0]['checkbox']);
   printf('Вход с логином %s, ID пользователя %d', $_SESSION['login'], $_SESSION['uid']);
   
-  include('form.php');
 }
+include('form.php');
 
+}
 else {
   $errors = FALSE;
   if (empty($_POST['fio']) || !preg_match('/^[а-яА-Яa-zA-Z\s]{1,150}$/u', $_POST['fio'])) {
