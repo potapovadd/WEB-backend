@@ -64,7 +64,7 @@ else {
       session_start();
     }
     $_SESSION['login'] = $_POST['login'];
-    $_SESSION['uid'] = count($log_pass); // было 123
+    $_SESSION['uid'] = count($log_pass); 
     header('Location: ./');
   }
   else {

@@ -2,8 +2,6 @@
 
 header('Content-Type: text/html; charset=UTF-8');
 
-session_start();
-
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $messages = array();
 
@@ -104,7 +102,7 @@ if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])){
 $db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
     [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
+if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
   $uid = $_SESSION['uid'];
   $sth = $db->prepare("SELECT * FROM form where id = $uid");
   $sth->execute();
