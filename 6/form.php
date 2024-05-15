@@ -6,7 +6,7 @@
         border: 2px solid red;
       }
     </style>
-    <title>5</title>
+    <title>6</title>
   </head>
 
   <body>
@@ -20,6 +20,12 @@
   if (!empty($messages['session'])) {
     print('<div id="messages">');
     print($messages['session']);
+    print('</div>');
+    print('<br>');
+  }
+  if (!empty($messages['admin'])) {
+    print('<div id="messages">');
+    print($messages['admin']);
     print('</div>');
     print('<br>');
   }
