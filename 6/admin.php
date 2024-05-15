@@ -126,7 +126,7 @@ $users_lang = $sth->fetchAll();
     <th>Количество</th>
   </tr>
   <?php
-    $sth = $db->prepare("SELECT lang.name, COUNT(form_lang.iduser) AS user_count FROM lang LEFT JOIN form_lang ON lang.id = form_lang.idlang GROUP BY lang.name");
+    $sth = $db->prepare("SELECT name, COUNT(form_lang.iduser) AS user_count FROM lang LEFT JOIN form_lang ON lang.id = form_lang.idlang GROUP BY name");
     $sth->execute();
     $user_count = $sth->fetchAll();
     foreach($user_count as $u_c) {
@@ -134,7 +134,7 @@ $users_lang = $sth->fetchAll();
       <td>%s</td>
       <td>%s</td>
       </tr>',
-      $u_c['lang_name'], $u_c['user_count']);
+      $u_c['name'], $u_c['user_count']);
     }
   ?>
 </table>
