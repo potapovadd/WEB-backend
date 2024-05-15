@@ -16,14 +16,14 @@ $values['day']=strip_tags(intval(substr($user[0]['date'], 0, $pos1)));
 $pos2 = strrpos(strip_tags($user[0]['date']),'.');
 $values['month']=strip_tags(intval(substr($user[0]['date'], $pos1 + 1, $pos2 - $pos1 - 1)));
 $values['year']=strip_tags(intval(substr($user[0]['date'], $pos2 + 1, 4)));
-$values['gender'] = strip_tags($user[0]['gender']);
+$values['radio1'] = strip_tags($user[0]['gender']);
 
 $sth = $db->prepare("SELECT idlang FROM form_lang where iduser = $uid");
 $sth->execute();
-$languages = $sth->fetchAll();
-$values['languages'] = array();
-foreach($languages as $l) {
-  array_push($values['languages'], $l['idlang']);
+$lang = $sth->fetchAll();
+$values['lang'] = array();
+foreach($lang as $l) {
+  array_push($values['lang'], $l['idlang']);
 }
 $values['bio'] = strip_tags($user[0]['bio']);
-$values['checkbox'] = strip_tags($user[0]['checkbox']);
+$values['check-1'] = strip_tags($user[0]['checkbox']);
