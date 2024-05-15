@@ -205,7 +205,7 @@
       Биография:<br>
       <textarea name="bio">
       <?php if ($errors['bio']) {print 'class="error"';} ?> 
-      <?php print $values['bio']; ?> </textarea>
+      <?php print $values['bio']; ?></textarea>
     </label><br>
 
     <label class=" 
