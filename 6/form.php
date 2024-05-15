@@ -203,7 +203,7 @@
 
     <label>
       Биография:<br>
-      <textarea name="bio">Я программист
+      <textarea name="bio">
       <?php if ($errors['bio']) {print 'class="error"';} ?> 
       <?php print $values['bio']; ?> </textarea>
     </label><br>
