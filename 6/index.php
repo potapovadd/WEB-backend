@@ -272,7 +272,7 @@ else {
   
     $id = $db->lastInsertId();
   
-    $sth = $db->prepare("SELECT * FROM users_languages");
+    $sth = $db->prepare("SELECT * FROM form_lang");
     $sth->execute();
     $users_langs = $sth->fetchAll();
     $tmp_id = count($users_langs)+1;
