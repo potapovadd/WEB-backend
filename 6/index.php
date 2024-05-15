@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
   }
 
+  if (empty($_COOKIE[session_name()]) && empty($_SESSION['login']))
+  {
+    $messages['admin'] = '<a href="admin.php">Войти как администратор.</a>';
+  }
+
   $errors = array();
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['tel'] = !empty($_COOKIE['tel_error']);
@@ -93,47 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : strip_tags($_COOKIE['bio_value']);
   $values['check-1'] = empty($_COOKIE['check-1_value']) ? '' : strip_tags($_COOKIE['check-1_value']);
 
-
-
-include('../password.php');
-if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])){
-    $userLogin = $_SESSION['login'];
-}
-$db = new PDO('mysql:host=localhost;dbname=u67327', $user, $pass,
-    [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
-  $uid = $_SESSION['uid'];
-  $sth = $db->prepare("SELECT * FROM form where id = $uid");
-  $sth->execute();
-  $user = $sth->fetchAll();
-  $values['fio'] = strip_tags($user[0]['fio']);
-  $values['tel'] = strip_tags($user[0]['tel']);
-  $values['email'] = strip_tags($user[0]['email']);
-  $pos1 = strpos(strip_tags($user[0]['date']),'.');
-  $values['day']=strip_tags(intval(substr($user[0]['date'], 0, $pos1)));
-
-  $pos2 = strrpos(strip_tags($user[0]['date']),'.');
-  $values['month']=strip_tags(intval(substr($user[0]['date'], $pos1 + 1, $pos2 - $pos1 - 1)));
-  $values['year']=strip_tags(intval(substr($user[0]['date'], $pos2 + 1, 4)));
-  $values['radio1'] = strip_tags($user[0]['gender']);
-
-  $sth = $db->prepare("SELECT idlang FROM form_lang where iduser = $uid");
-  $sth->execute();
-  $languages = $sth->fetchAll();
-  $values['lang'] = array();
-  foreach($languages as $l) {
-    array_push($values['lang'], strip_tags($l['idlang']));
-  }
-  $values['bio'] = strip_tags($user[0]['bio']);
-  $values['check-1'] = strip_tags($user[0]['checkbox']);
+if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])){
+  include('old_value.php');
   printf('Вход с логином %s, ID пользователя %d', $_SESSION['login'], $_SESSION['uid']);
-  
 }
+
 include('form.php');
 
 }
 else {
+  if(isset($_POST['exit_admin'])) {
+    setcookie('admin', '', 100000);
+    header('Location: ./');
+    exit;
+  } 
   $errors = FALSE;
   if (empty($_POST['fio']) || !preg_match('/^[а-яА-Яa-zA-Z\s]{1,150}$/u', $_POST['fio'])) {
     setcookie('fio_error', '1', time() + 24 * 60 * 60);
@@ -244,12 +222,9 @@ else {
       $stmt = $db->prepare("UPDATE form SET fio = ?, tel = ?, email = ?, date = ?, gender = ?, bio = ?, checkbox = ? where id = $id");
       $stmt->execute([$_POST['fio'], $_POST['tel'], $_POST['email'], $_POST['day'] . ':' . $_POST['month'] . ':' . $_POST['year'], $_POST['radio1'], $_POST['bio'], true]);
 
-      $sth = $db->prepare("SELECT id FROM form_lang where iduser = ?");
-      $sth->execute([$id]);
-      $all_id = $sth->fetchAll();
-      $first_id = intval($all_id[0]['id']);
-
-      print(strval($id) . '  '. strval($first_id));
+      $sth = $db->prepare("SELECT * FROM form_lang");
+      $sth->execute();
+      $users_langs = $sth->fetchAll();
       
       $stmt = $db->prepare("DELETE FROM form_land where iduser = ?");
       $stmt->execute([$id]);
@@ -263,6 +238,17 @@ else {
         $stmt->execute();
         $first_id++;
     }
+    $sth = $db->prepare("SELECT * FROM form_lang");
+    $sth->execute();
+    $users_langs = $sth->fetchAll();
+    $countId = count($users_langs);
+      $index = 0;
+      for ($i = 1; $i <= $countId; $i++) {
+        $tempUL = intval($users_langs[$index]['id']);
+        $stmt = $db->prepare("UPDATE form_lang SET id = ? where id = $tempUL");
+        $stmt->execute([$i]);
+        $index++;
+      }
     }
     catch(PDOException $e){
       print('Error : ' . $e->getMessage());
@@ -276,18 +262,23 @@ else {
     setcookie('pass', $password, time() + 12 * 30 * 24 * 60 * 60);
   
   try {
+    $sth = $db->prepare("SELECT * FROM form");
+    $sth->execute();
+    $users = $sth->fetchAll();
+    $temp_idU = count($users)+1;
+
     $stmt = $db->prepare("INSERT INTO form SET fio = ?, tel = ?, email = ?, date = ?, gender = ?, bio = ?, checkbox = ?");
     $stmt->execute([$_POST['fio'], $_POST['tel'], $_POST['email'], $_POST['day'] . ':' . $_POST['month'] . ':' . $_POST['year'], $_POST['radio1'], $_POST['bio'], true]);
   
     $id = $db->lastInsertId();
   
-    $stmt = $db->prepare("INSERT INTO form_lang (iduser, idlang) VALUES (:iduser, :idlang)");
-    foreach ($_POST['lang'] as $idlang) {
-      $stmt->bindParam(':iduser', $iduser);
-      $stmt->bindParam(':idlang', $idlang);
-      $iduser = $id;
-      $stmt->execute();
-    }
+    $sth = $db->prepare("SELECT * FROM users_languages");
+    $sth->execute();
+    $users_langs = $sth->fetchAll();
+    $tmp_id = count($users_langs)+1;
+
+    include('insert_l.php');
+
     $stmt = $db->prepare("INSERT INTO login_password SET login = ?, password = ?");
       $stmt->execute([$login, md5($password)]);
   }
@@ -298,5 +289,13 @@ else {
   }
   setcookie('save', '1');
 
-  header('Location: index.php');
+  $sth = $db->prepare("SELECT * FROM login_admin");
+  $sth->execute();
+  $login_admin = $sth->fetchAll();
+  if (!empty($_COOKIE['admin']) && $_COOKIE['admin'] == $l_g_admin[0]['password']) {
+    header('Location: admin.php');
+  }
+  else {
+    header('Location: ./');
+  }
 }
