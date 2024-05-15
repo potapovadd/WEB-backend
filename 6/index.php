@@ -292,7 +292,7 @@ else {
   $sth = $db->prepare("SELECT * FROM login_admin");
   $sth->execute();
   $login_admin = $sth->fetchAll();
-  if (!empty($_COOKIE['admin']) && $_COOKIE['admin'] == $l_g_admin[0]['password']) {
+  if (!empty($_COOKIE['admin']) && $_COOKIE['admin'] == $login_admin[0]['password']) {
     header('Location: admin.php');
   }
   else {
