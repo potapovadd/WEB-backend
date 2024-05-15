@@ -226,7 +226,7 @@ else {
       $sth->execute();
       $users_langs = $sth->fetchAll();
       
-      $stmt = $db->prepare("DELETE FROM form_land where iduser = ?");
+      $stmt = $db->prepare("DELETE FROM form_lang where iduser = ?");
       $stmt->execute([$id]);
 
       $stmt = $db->prepare("INSERT INTO form_lang (id, iduser, idlang) VALUES (:id, :iduser, :idlang)");
