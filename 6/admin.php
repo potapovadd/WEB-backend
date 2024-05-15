@@ -35,9 +35,6 @@ if (!empty($_COOKIE['save'])) {
   setcookie('bio_value', '', 100000);
   setcookie('check-1_value', '', 100000);
 }
-$sth = $db->prepare("SELECT * FROM login_admin");
-$sth->execute();
-$login_admin = $sth->fetchAll();
 setcookie('admin', $login_admin[0]['password'], time() + 24 * 60 * 60);
 
 include('../password.php');
@@ -73,14 +70,18 @@ $users = $sth->fetchAll();
       <td>%s</td>
       <td>%s</td>
       <td class="nullCell">
-        <form action="action.php" method="POST">
+        <form 
+          style="background-color: white;"
+          action="action.php" method="POST">
           <input type="hidden" name="action" value="change">
           <input type="hidden" name="id" value="%d">
           <input type="submit" value="Изменить"/>
         </form>
       </td>
       <td class="nullCell">
-        <form action="action.php" method="POST">
+        <form
+          style="background-color: white;" 
+          action="action.php" method="POST">
           <input type="hidden" name="action" value="delete">
           <input type="hidden" name="id" value="%d">
           <input type="submit" value="Удалить"/>
@@ -88,7 +89,7 @@ $users = $sth->fetchAll();
       </td>
       </tr>',
       $user['id'], $user['fio'], $user['tel'], $user['email'],
-      $user['birth'], $user['gender'], $user['bio'],
+      $user['date'], $user['gender'], $user['bio'],
       $user['id'], $user['id']);
     }
   ?>
@@ -122,7 +123,7 @@ $users_lang = $sth->fetchAll();
 <table>
   <tr>
     <th>Язык программирования</th>
-    <th>Количество поклонников</th>
+    <th>Количество</th>
   </tr>
   <?php
     $sth = $db->prepare("SELECT lang.name, COUNT(form_lang.iduser) AS user_count FROM lang LEFT JOIN form_lang ON lang.id = form_lang.idlang GROUP BY lang.name");
@@ -133,11 +134,13 @@ $users_lang = $sth->fetchAll();
       <td>%s</td>
       <td>%s</td>
       </tr>',
-      $u_c['language_name'], $u_c['user_count']);
+      $u_c['lang_name'], $u_c['user_count']);
     }
   ?>
 </table>
 
-<form action="index.php" method="POST">
+<form 
+  style="background-color: white;"
+  action="index.php" method="POST">
   <input type="submit" name="exit_admin" value="Выход">
 </form>
